@@ -1,16 +1,17 @@
-#Sea Battle
+# Sea Battle
 Sea Battle is a game for two players. The game is played on four grids, two for each player. The grids are typically square – usually 10×10 – and the individual squares in the grid are identified by letter and number. On one grid the player arranges ships and records the shots by the opponent. On the other grid the player records their own shots.
+
 The project was done by **Phạm Quang Minh**, in the course of Object Oriented Programming at **ProPTIT**.
 
-#Tech Stask
+# Tech Stask
 - **Java**
-#Installation
+# Installation
 - Clone the repo
 - Open the project in your IDE
 - Run the project
-#Demo
+# Demo
 Gameplay Video: https://www.youtube.com/watch?v=b6pgw1dQBac
-#Images
+# Images
 - **Menu**
 ![Alt text](Menu-1.png)
 - **Mode Game**
@@ -21,7 +22,7 @@ Gameplay Video: https://www.youtube.com/watch?v=b6pgw1dQBac
 ![Alt text](<Miss shot-1.png>)
 - **Hit Shot**
 ![Alt text](<Hit shot-1.png>)
-#Usage
+# Usage
 - Project Structure
 ```bash
 
