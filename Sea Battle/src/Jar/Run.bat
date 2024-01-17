@@ -1,1 +1,1 @@
-java -jar Sea_Battle.jar
+java -jar Sea_battle.jar

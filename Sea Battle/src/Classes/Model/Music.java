@@ -12,7 +12,7 @@ public class Music {
     Music() {
     }
 
-    Music(boolean game, boolean backgound) {
+    Music(boolean game) {
         this.game = game;
     }
 

@@ -2,7 +2,7 @@ import java.util.Scanner;
 
 public class Run {
     public static void main(String[] args) {
-        Music music = new Music(false, false);
+        Music music = new Music(false);
         Player player = new Player();
         Player oppositePlayer = new Player();
         Scanner scanner = new Scanner(System.in);
