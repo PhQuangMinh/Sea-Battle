@@ -5,7 +5,8 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class FunctionComputer {
-    public int computerShotOut(Scanner scanner, Player player, Player oppositePlayer, int level, int swap, Music music) {
+    public int computerShotOut(Scanner scanner, Player player, Player oppositePlayer, int level, int swap,
+            Music music) {
         switch (level) {
             case 1:
                 return easyComputer(scanner, player, oppositePlayer, swap, level, music);
@@ -40,24 +41,33 @@ public class FunctionComputer {
         return gameShot.checkShipShot(player, oppositePlayer, shot, swap, scanner, music);
     }
 
-    private int shoot(Player player, Player oppositePlayer, ArrayList<Shot> list, int swap, Scanner scanner, Music music) {
+    private int listShoot(Player player, Player oppositePlayer, ArrayList<Shot> list, int swap, Scanner scanner,
+            Music music) {
         for (Shot temple : list) {
             boolean bool = false;
             if (!temple.checkHit(oppositePlayer.getBoard())) {
                 bool = true;
             } else {
-                ArrayList<Ship> oppoShot = oppositePlayer.getShips();
-                for (Ship ship : oppoShot) {
+                ArrayList<Ship> oppoShips = oppositePlayer.getShips();
+                for (Ship ship : oppoShips) {
                     if (ship.checkShotInShip(temple)) {
-                        if (ship.checkDestroyed(oppositePlayer.getBoard()) == true) {
+                        char[][] oppositeBoard = oppositePlayer.getBoard();
+                        char value = oppositeBoard[temple.getRow()][temple.getColumn()];
+                        oppositeBoard[temple.getRow()][temple.getColumn()] = 'x';
+                        if (ship.checkDestroyed(oppositeBoard) == true) {
+                            oppositeBoard[temple.getRow()][temple.getColumn()] = value;
+                            oppositePlayer.setBoard(oppositeBoard);
                             shooting(player, oppositePlayer, temple, swap, scanner, music);
                             player.setStatusNormal(false);
                             return 2;
                         }
+                        oppositeBoard[temple.getRow()][temple.getColumn()] = value;
+                        oppositePlayer.setBoard(oppositeBoard);
                     }
                 }
             }
             shooting(player, oppositePlayer, temple, swap, scanner, music);
+            Effect.clearScreen();
             if (bool)
                 return 1;
         }
@@ -65,7 +75,7 @@ public class FunctionComputer {
     }
 
     private Shot randomShot(Player oppsitePlayer, int level) {
-        int[] rdom = { 100, 10, 7 };
+        int[] rdom = { 100, 7, 6 };
         Random random = new Random();
         int number = random.nextInt(rdom[level - 1]) + 1;
         Shot shot = new Shot();
@@ -105,7 +115,7 @@ public class FunctionComputer {
             player.setStatusNormal(false);
             ArrayList<Shot> list = new ArrayList<>();
             player.setShots(list);
-            return shoot(player, oppositePlayer, listShot, swap, scanner, music);
+            return listShoot(player, oppositePlayer, listShot, swap, scanner, music);
         }
         if (listShot.size() > 1) {
             Random random = new Random();
@@ -116,6 +126,10 @@ public class FunctionComputer {
                 ArrayList<Shot> list = new ArrayList<>();
                 ArrayList<Shot> oppoList = new ArrayList<>();
                 Shot shot = listShot.get(0);
+                listShot.clear();
+                player.setShots(listShot);
+                boolean okList = true;
+                boolean okOppoList = true;
                 int count = 0;
                 do {
                     count++;
@@ -133,18 +147,28 @@ public class FunctionComputer {
                         temple1 = new Shot(shot.getRow(), shot.getColumn() + oppoCount);
                         temple2 = new Shot(shot.getRow(), shot.getColumn() - oppoCount);
                     }
-                    if (!check(temple1, oppositeBoard, player.getSizeBoard()) && !check(temple2, oppositeBoard, player.getSizeBoard()))
+                    if (!check(temple1, oppositeBoard, player.getSizeBoard())
+                            && !check(temple2, oppositeBoard, player.getSizeBoard()))
                         break;
-                    if (check(temple1, oppositeBoard, player.getSizeBoard()) && temple1.checkPosition(oppositeBoard, player.getSizeBoard()))
+                    if (check(temple1, oppositeBoard, player.getSizeBoard())
+                            && temple1.checkPosition(oppositeBoard, player.getSizeBoard()) && okList){
                         list.add(temple1);
-                    if (check(temple2, oppositeBoard, player.getSizeBoard()) && temple2.checkPosition(oppositeBoard, player.getSizeBoard()))
+                        if (!temple1.checkHit(oppositeBoard)) okList = false;
+                    }
+                    if (check(temple2, oppositeBoard, player.getSizeBoard())
+                            && temple2.checkPosition(oppositeBoard, player.getSizeBoard()) && okOppoList){
                         oppoList.add(temple2);
+                        if (!temple2.checkHit(oppositeBoard)) okOppoList = false;
+                    }
                 } while (true);
-                if (!oppoList.isEmpty()) {
+                if (!oppoList.isEmpty() || oppoList.get(0).checkHit(oppositeBoard)) {
                     player.setShots(oppoList);
                     player.setStatusNormal(true);
                 }
-                return shoot(player, oppositePlayer, list, swap, scanner, music);
+                for (Shot shottt:list){
+                    System.out.println(shottt.getRow() + " " + shottt.getColumn());
+                }
+                return listShoot(player, oppositePlayer, list, swap, scanner, music);
             }
             return shooting(player, oppositePlayer, firstShot, swap, scanner, music);
         }
