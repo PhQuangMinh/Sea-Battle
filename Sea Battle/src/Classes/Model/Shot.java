@@ -1,4 +1,6 @@
-public class Shot {
+import java.io.Serializable;
+
+public class Shot implements Serializable {
     private int row;
     private int column;
 

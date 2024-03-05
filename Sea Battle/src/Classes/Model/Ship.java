@@ -1,4 +1,6 @@
-public class Ship {
+import java.io.Serializable;
+
+public class Ship implements Serializable {
     private String name;
     private int rowStart;
     private int columnStart;

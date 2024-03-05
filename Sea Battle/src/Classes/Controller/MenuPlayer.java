@@ -54,5 +54,4 @@ public class MenuPlayer {
             }
         } while (true);
     }
-
 }

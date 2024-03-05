@@ -1,4 +1,6 @@
-public class Music {
+import java.io.Serializable;
+
+public class Music implements Serializable {
     private boolean game;
 
     public boolean getGame() {

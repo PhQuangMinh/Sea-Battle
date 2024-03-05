@@ -1,3 +1,7 @@
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
 import java.util.Scanner;
 
 public class Play {
@@ -109,6 +113,12 @@ public class Play {
         if (level == 0) {
             File file = new File();
             file.addPlayer(player);
+        }
+        try {
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream("continue.in"));
+            objectOutputStream.reset();
+        } catch (IOException e) {
+            System.out.println("Error");
         }
         return;
     }
